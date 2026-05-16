@@ -1,0 +1,12 @@
+class ApiKeys {
+  static const String googleMapsKey = "YOUR_GOOGLE_MAPS_API_KEY";
+  
+  // Firebase Web
+  static const String webApiKey = 'YOUR_WEB_API_KEY';
+  
+  // Firebase Android
+  static const String androidApiKey = 'YOUR_ANDROID_API_KEY';
+  
+  // Firebase iOS
+  static const String iosApiKey = 'YOUR_IOS_API_KEY';
+}

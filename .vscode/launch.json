@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "payanam",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--device-user=0"
+            ]
+        },
+        {
+            "name": "payanam (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--device-user=0"
+            ]
+        },
+        {
+            "name": "payanam (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--device-user=0"
+            ]
+        }
+    ]
+}
