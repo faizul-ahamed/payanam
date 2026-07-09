@@ -63,8 +63,8 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return AuthTemplate(
-      title: 'Student\nLogin',
-      subtitle: 'Enter your College ID to track your bus.',
+      title: 'Student / Teacher\nLogin',
+      subtitle: 'Enter your College ID or Staff ID to track your bus.',
       headerIcon: Icons.school_outlined,
       accentColor: AppColors.primaryPurple,
       onBack: () => Navigator.pop(context),
@@ -75,12 +75,12 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
             // ID Field
             _buildTextField(
               controller: _idController,
-              label: 'College ID',
-              hint: 'e.g. 927623BIT033',
+              label: 'College ID / Staff ID',
+              hint: 'e.g. 927623BIT033 or MKCE123',
               icon: Icons.badge_outlined,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your College ID';
+                  return 'Please enter your ID';
                 }
                 return null;
               },

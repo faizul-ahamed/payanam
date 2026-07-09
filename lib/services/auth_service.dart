@@ -150,7 +150,7 @@ class AuthService {
       final studentDoc = await _firestore.collection('students').doc(normalizedId).get();
       
       if (!studentDoc.exists) {
-        throw 'Student with ID $normalizedId not found';
+        throw 'User with ID $normalizedId not found';
       }
 
       String email = studentDoc.get('email');
