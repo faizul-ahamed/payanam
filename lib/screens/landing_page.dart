@@ -368,7 +368,7 @@ class _LandingPageState extends State<LandingPage>
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: 'Your Campus\n',
+                  text: 'Your MKCE\n',
                   style: AppTextStyles.heading1(context).copyWith(
                     fontSize: 26,
                     height: 1.3,
@@ -393,7 +393,7 @@ class _LandingPageState extends State<LandingPage>
           ),
           const SizedBox(height: 16),
           Text(
-            'Track your bus in real-time and\nnever miss a stop again with our\npremium campus utility.',
+            'Track your MKCE college bus in real-time\nand never miss a stop again with our\npremium campus utility.',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium(context).copyWith(
               color: AppColors.textMutedDark,
