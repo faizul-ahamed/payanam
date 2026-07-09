@@ -393,7 +393,7 @@ class _LandingPageState extends State<LandingPage>
           ),
           const SizedBox(height: 16),
           Text(
-            'Track your MKCE college bus in real-time\nand never miss a stop again with our\npremium campus utility.',
+            'Welcome to M. Kumarasamy College of Engineering (MKCE) Transport System.\n\nTrack your college bus in real-time, view routes, and never miss a stop again with our premium campus utility designed for students and faculty.',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium(context).copyWith(
               color: AppColors.textMutedDark,

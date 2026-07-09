@@ -32,6 +32,7 @@ class _StudentRegistrationScreenState extends State<StudentRegistrationScreen> {
   String? _selectedStop;
   bool _isLoading = false;
   bool _isPasswordVisible = false;
+  bool _isTeacher = false;
 
   @override
   void initState() {
@@ -97,11 +98,12 @@ class _StudentRegistrationScreenState extends State<StudentRegistrationScreen> {
           email: _emailController.text.trim(),
           phone: _phoneController.text.trim(),
           department: _deptController.text.trim(),
-          year: _yearController.text.trim(),
+          year: _isTeacher ? 'N/A' : _yearController.text.trim(),
           routeId: _selectedRoute!,
           stopId: _selectedStop!,
           collegeId: _collegeIdController.text.trim(),
           password: _passwordController.text,
+          role: _isTeacher ? 'teacher' : 'student',
         );
 
         if (mounted) {
@@ -125,7 +127,7 @@ class _StudentRegistrationScreenState extends State<StudentRegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return AuthTemplate(
-      title: 'Student\nRegistration',
+      title: _isTeacher ? 'Teacher\nRegistration' : 'Student\nRegistration',
       subtitle: 'Create your account to access Payanam.',
       headerIcon: Icons.person_add_outlined,
       accentColor: AppColors.primaryPurple,
@@ -134,6 +136,34 @@ class _StudentRegistrationScreenState extends State<StudentRegistrationScreen> {
         key: _formKey,
         child: Column(
           children: [
+            // Role Toggle
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ChoiceChip(
+                  label: const Text('Student'),
+                  selected: !_isTeacher,
+                  onSelected: (val) => setState(() => _isTeacher = !val),
+                  selectedColor: AppColors.primaryPurple.withValues(alpha: 0.2),
+                  labelStyle: TextStyle(
+                    color: !_isTeacher ? AppColors.primaryPurple : AppColors.textMutedDark,
+                    fontWeight: !_isTeacher ? FontWeight.bold : FontWeight.normal,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                ChoiceChip(
+                  label: const Text('Teacher'),
+                  selected: _isTeacher,
+                  onSelected: (val) => setState(() => _isTeacher = val),
+                  selectedColor: AppColors.primaryPurple.withValues(alpha: 0.2),
+                  labelStyle: TextStyle(
+                    color: _isTeacher ? AppColors.primaryPurple : AppColors.textMutedDark,
+                    fontWeight: _isTeacher ? FontWeight.bold : FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
             _buildTextField(
               controller: _fullNameController,
               label: 'Full Name',
@@ -171,16 +201,18 @@ class _StudentRegistrationScreenState extends State<StudentRegistrationScreen> {
                     icon: Icons.business_outlined,
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildDropdown(
-                    label: 'Year',
-                    value: _yearController.text.isEmpty ? null : _yearController.text,
-                    items: ['1st Year', '2nd Year', '3rd Year', '4th Year'],
-                    onChanged: (v) => setState(() => _yearController.text = v!),
-                    icon: Icons.calendar_today_outlined,
+                if (!_isTeacher) ...[
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildDropdown(
+                      label: 'Year',
+                      value: _yearController.text.isEmpty ? null : _yearController.text,
+                      items: ['1st Year', '2nd Year', '3rd Year', '4th Year'],
+                      onChanged: (v) => setState(() => _yearController.text = v!),
+                      icon: Icons.calendar_today_outlined,
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
             const SizedBox(height: 16),
@@ -208,14 +240,16 @@ class _StudentRegistrationScreenState extends State<StudentRegistrationScreen> {
 
             _buildTextField(
               controller: _collegeIdController,
-              label: 'College ID',
-              hint: 'e.g. 927623BIT033',
+              label: _isTeacher ? 'Staff ID' : 'College ID',
+              hint: _isTeacher ? 'e.g. MKCE123' : 'e.g. 927623BIT033',
               icon: Icons.badge_outlined,
               validator: (v) {
                 if (v == null || v.isEmpty) return 'Required';
-                // Regex for 9276 23 BIT 033 format
-                if (!RegExp(r'^\d{4}\d{2}[A-Z]{2,3}\d{3}$').hasMatch(v)) {
-                  return 'Format: 927623BIT033';
+                if (!_isTeacher) {
+                  // Regex for 9276 23 BIT 033 format
+                  if (!RegExp(r'^\d{4}\d{2}[A-Z]{2,3}\d{3}$').hasMatch(v)) {
+                    return 'Format: 927623BIT033';
+                  }
                 }
                 return null;
               },

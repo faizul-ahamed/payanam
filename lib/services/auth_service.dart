@@ -39,6 +39,7 @@ class AuthService {
     required String stopId,
     required String collegeId,
     required String password,
+    String role = 'student',
   }) async {
     try {
       // 1. Normalize IDs and Email
@@ -68,7 +69,7 @@ class AuthService {
         'routeId': routeId.trim(),
         'stopId': stopId.trim(),
         'collegeId': normalizedCollegeId,
-        'role': 'student',
+        'role': role,
         'status': 'active', // Explicitly marked active
         'createdAt': FieldValue.serverTimestamp(),
       });
@@ -77,10 +78,10 @@ class AuthService {
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'email': normalizedEmail,
         'collegeId': normalizedCollegeId,
-        'role': 'student',
+        'role': role,
       });
 
-      await _saveRole('student');
+      await _saveRole(role);
 
       return userCredential;
     } catch (e) {
