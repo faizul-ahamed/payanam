@@ -189,7 +189,7 @@ class _LandingPageState extends State<LandingPage>
         const SizedBox(width: 12),
         // App name
         Text(
-          'PAYANAM',
+          'PAYANAM (v1.1)',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w900,
