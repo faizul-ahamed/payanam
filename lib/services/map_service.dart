@@ -59,7 +59,7 @@ class MapService {
       final LatLng destination = chunk.last;
       List<LatLng> waypoints = chunk.length > 2 ? chunk.sublist(1, chunk.length - 1) : [];
       
-      String waypointsStr = waypoints.map((l) => "${l.latitude},${l.longitude}").join("|");
+      String waypointsStr = waypoints.map((l) => "${l.latitude},${l.longitude}").join("%7C");
       final url = "https://maps.googleapis.com/maps/api/directions/json?"
           "origin=${origin.latitude},${origin.longitude}&"
           "destination=${destination.latitude},${destination.longitude}&"
@@ -81,7 +81,7 @@ class MapService {
             // Process Legs
             for (int k = 0; k < route['legs'].length; k++) {
               var leg = route['legs'][k];
-              totalSeconds += (leg['duration']['value'] as int);
+              totalSeconds += (leg['duration']['value'] as num).toInt();
               totalMeters += (leg['distance']['value'] as num).toDouble();
               
               segmentDistances[stopOffset] = leg['distance']['text'];
