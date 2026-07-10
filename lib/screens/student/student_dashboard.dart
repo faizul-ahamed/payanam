@@ -85,7 +85,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                   Image.asset('assets/images/logo.png', height: 28),
                   const SizedBox(width: 8),
                   const Text(
-                    'PAYANAM (v1.2)',
+                    'PAYANAM (v1.3)',
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
                       letterSpacing: 1.0,
