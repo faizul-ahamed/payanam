@@ -90,18 +90,14 @@ class MapService {
             }
           } else {
             debugPrint("Directions API Error for chunk starting at $i: ${data['status']}");
-            // Fallback for this segment: use straight lines
-            _useFallbackForChunk(chunk, fullPolyline, segmentDistances, segmentDurations, stopOffset);
-            stopOffset += (chunk.length - 1);
+            throw Exception("API Error: ${data['status']} - ${data['error_message'] ?? 'No details'}");
           }
         } else {
-          _useFallbackForChunk(chunk, fullPolyline, segmentDistances, segmentDurations, stopOffset);
-          stopOffset += (chunk.length - 1);
+          throw Exception("HTTP ${response.statusCode}: ${response.body}");
         }
       } catch (e) {
         debugPrint("Exception in fetchRoadPolyline for chunk starting at $i: $e");
-        _useFallbackForChunk(chunk, fullPolyline, segmentDistances, segmentDurations, stopOffset);
-        stopOffset += (chunk.length - 1);
+        throw e;
       }
     }
 

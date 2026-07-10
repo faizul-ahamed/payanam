@@ -497,6 +497,11 @@ class _StudentTrackPaneState extends State<StudentTrackPane> {
     } catch (e) {
       debugPrint("Polyline fetch failed: $e");
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Error drawing route: $e"),
+          duration: const Duration(seconds: 8),
+          backgroundColor: Colors.red,
+        ));
         setState(() {
           _isRouteLoading = false;
         });
