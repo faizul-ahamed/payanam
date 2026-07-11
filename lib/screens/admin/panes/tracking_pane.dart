@@ -410,7 +410,7 @@ class _TrackingPaneState extends State<TrackingPane> {
         
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('trips').where('status', whereIn: ['running', 'delayed', 'breakdown', 'emergency']).snapshots(),
+            stream: FirebaseFirestore.instance.collection('trips').where('status', whereIn: ['running', 'delayed', 'breakdown', 'emergency', 'completed']).snapshots(),
             builder: (context, snapshot) {
               _markers.clear();
               Map<String, dynamic>? selectedTripData;

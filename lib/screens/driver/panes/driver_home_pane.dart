@@ -718,7 +718,7 @@ class _DriverHomePaneState extends State<DriverHomePane> {
         stopPos.latitude, stopPos.longitude
       );
       
-      if (distance < 250) { // Slightly increased proximity to 250m for better detection
+      if (distance < 200) { // Keep radius at exactly 200m as requested
         furthestReachedIndex = i;
       }
     }
@@ -828,8 +828,8 @@ class _DriverHomePaneState extends State<DriverHomePane> {
       );
 
       setState(() {
-        _tripStatus = 'inactive';
-        _currentStopIndex = 0;
+        _tripStatus = 'completed';
+        // Retain _currentStopIndex so all stops show as passed
         _tripDuration = null;
         _tripDistance = null;
       });
@@ -1082,18 +1082,22 @@ class _DriverHomePaneState extends State<DriverHomePane> {
     bool isRunning = _tripStatus == 'running';
     bool isDelayed = _tripStatus == 'delayed';
     bool isEmergency = _tripStatus == 'emergency' || _tripStatus == 'breakdown';
+    bool isCompleted = _tripStatus == 'completed';
     
     Color color = isRunning ? AppColors.success : 
                  (isDelayed ? AppColors.warning : 
-                 (isEmergency ? AppColors.error : AppColors.textMutedDark));
+                 (isEmergency ? AppColors.error : 
+                 (isCompleted ? AppColors.primaryPurple : AppColors.textMutedDark)));
     
     String text = isRunning ? 'TRIP IS RUNNING' : 
                  (isDelayed ? 'TRIP DELAYED' : 
-                 (isEmergency ? 'EMERGENCY REPORTED' : 'WAITING TO START'));
+                 (isEmergency ? 'EMERGENCY REPORTED' : 
+                 (isCompleted ? 'TRIP COMPLETED' : 'WAITING TO START')));
 
     IconData icon = isRunning ? Icons.play_arrow_rounded : 
                     (isDelayed ? Icons.timer_rounded : 
-                    (isEmergency ? Icons.warning_rounded : Icons.radio_button_checked_rounded));
+                    (isEmergency ? Icons.warning_rounded : 
+                    (isCompleted ? Icons.check_circle_rounded : Icons.radio_button_checked_rounded)));
 
     return Container(
       width: double.infinity,
@@ -1274,7 +1278,7 @@ class _DriverHomePaneState extends State<DriverHomePane> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text('LIVE STOP SEQUENCE', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
-              if (_tripStatus == 'inactive') Row(
+              if (_tripStatus == 'inactive' || _tripStatus == 'completed') Row(
                 children: [
                    _sessionToggle('Morning'),
                    const SizedBox(width: 8),
@@ -1374,10 +1378,10 @@ class _DriverHomePaneState extends State<DriverHomePane> {
           children: [
             Expanded(
               child: _actionButton(
-                label: _tripStatus == 'inactive' ? 'START RUN' : 'STOP RUN',
-                icon: _tripStatus == 'inactive' ? Icons.play_arrow_rounded : Icons.stop_rounded,
-                color: _tripStatus == 'inactive' ? AppColors.success : AppColors.error,
-                onPressed: _tripStatus == 'inactive' ? _handleStartTrip : _handleEndTrip,
+                label: (_tripStatus == 'inactive' || _tripStatus == 'completed') ? 'START RUN' : 'STOP RUN',
+                icon: (_tripStatus == 'inactive' || _tripStatus == 'completed') ? Icons.play_arrow_rounded : Icons.stop_rounded,
+                color: (_tripStatus == 'inactive' || _tripStatus == 'completed') ? AppColors.success : AppColors.error,
+                onPressed: (_tripStatus == 'inactive' || _tripStatus == 'completed') ? _handleStartTrip : _handleEndTrip,
                 isPrimary: true,
               ),
             ),

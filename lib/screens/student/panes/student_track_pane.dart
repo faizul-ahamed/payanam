@@ -94,7 +94,7 @@ class _StudentTrackPaneState extends State<StudentTrackPane> {
   void initState() {
     super.initState();
     _tripSubscription = FirebaseFirestore.instance.collection('trips')
-        .where('status', whereIn: ['running', 'delayed', 'breakdown'])
+        .where('status', whereIn: ['running', 'delayed', 'breakdown', 'completed'])
         .snapshots()
         .listen(_handleTripUpdate);
     _initializeNotifications();
@@ -769,6 +769,9 @@ class _StudentTrackPaneState extends State<StudentTrackPane> {
       
       setState(() {
         _lastStatus = status;
+        if (status == 'completed') {
+          _etaText = "Trip Completed";
+        }
         
         // 1. Session Sync
         if (currentSession != _currentSession) {

@@ -419,11 +419,14 @@ class AuthService {
         'endTime': FieldValue.serverTimestamp(),
         'status': 'completed',
       });
-      await _firestore.collection('trips').doc(driverId).delete();
+      await _firestore.collection('trips').doc(driverId).update({
+        'status': 'completed',
+        'endTime': FieldValue.serverTimestamp(),
+      });
     }
     
     await _firestore.collection('drivers').doc(driverId).update({
-      'tripStatus': 'inactive',
+      'tripStatus': 'completed',
       'currentSession': FieldValue.delete(),
     });
   }
